@@ -7,9 +7,9 @@ import {
 } from "@ngneat/query";
 
 import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs";
+import { defer, from, map, of } from "rxjs";
 
-const API_URL = "https://rickandmortyapi.com/api/character";
+export const API_URL = "https://rickandmortyapi.com/api/character";/*  */
 
 @Injectable({ providedIn: "root" })
 export class QueryService {
@@ -27,8 +27,12 @@ export class QueryService {
   }
 
   character$(projectId: string) {
+    return defer(() => from(this.queryClient.ensureQueryData(this.queryOptions(projectId))));
+  }
+
+  characterUseQuery$(projectId: string) {
     return this.useQuery(this.queryOptions(projectId)).result$.pipe(
-      filterSuccessResult()
+      filterSuccessResult()/*  */
     );
   }
 
